@@ -1,0 +1,1 @@
+from routes.metadata import create_metadata_router as metadata_router
