@@ -1,6 +1,8 @@
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, Request
 from asyncer import asyncify
+from loguru import logger
 
+from schemas.shared import APIResponse
 from services.metadata_scripts.download_metadata import extract_and_store_dhis2_metadata
 
 
@@ -23,7 +25,7 @@ def create_metadata_router() -> APIRouter:
         ),
         status_code=status.HTTP_201_CREATED,
     )
-    async def download_metadata() -> str:
+    async def download_metadata(request: Request) -> APIResponse:
         """
         Endpoint to trigger metadata extraction and storage.
 
@@ -35,8 +37,11 @@ def create_metadata_router() -> APIRouter:
         str
             Message indicating success or failure of the operation.
         """
+        trace_id = request.state.trace_id
+        logger.info(f"[{trace_id}] Downloading metadata from DHIS2")
+
         # Execute the sync metadata extraction asynchronously
-        message = await asyncify(extract_and_store_dhis2_metadata)()
+        message = await asyncify(extract_and_store_dhis2_metadata)(trace_id)
         return message
 
     return router

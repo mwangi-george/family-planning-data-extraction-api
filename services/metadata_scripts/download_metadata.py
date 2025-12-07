@@ -8,6 +8,7 @@ from services.metadata_scripts.get_indicators import get_indicators
 from services.metadata_scripts.get_data_elements import get_data_elements
 from services.metadata_scripts.get_organisation_units import get_organisation_units
 from services.metadata_scripts.helpers import save_df_to_db
+from schemas.shared import APIResponse
 
 
 def load_env_variables() -> tuple[str, str, str, str]:
@@ -42,7 +43,7 @@ def load_env_variables() -> tuple[str, str, str, str]:
     return DHIS2_BASE_URL, DHIS2_USERNAME, DHIS2_PASSWORD, FP_DB_URL
 
 
-def extract_and_store_dhis2_metadata() -> str:
+def extract_and_store_dhis2_metadata(trace_id: str) -> APIResponse:
     """
     Extract DHIS2 metadata objects (organisation units, data elements, and indicators)
     and save them into a relational database.
@@ -99,12 +100,17 @@ def extract_and_store_dhis2_metadata() -> str:
 
         msg = "All metadata successfully saved to the database."
         logger.success(msg)
-        return msg
+        return APIResponse(success=True, message=msg, trace_id=trace_id, data=None)
 
     except Exception as e:
         logger.exception(f"Failed during metadata extraction or storage: {e}")
-        return "Metadata extraction or storage failed. Check your logs"
+        return APIResponse(
+            success=False,
+            message="Metadata extraction or storage failed. Check your logs",
+            trace_id=trace_id,
+            data=None,
+        )
 
 
 if __name__ == "__main__":
-    extract_and_store_dhis2_metadata()
+    extract_and_store_dhis2_metadata(trace_id="test_trace_id")
