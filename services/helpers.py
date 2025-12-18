@@ -442,7 +442,7 @@ if __name__ == "__main__":
     DHIS2_PASSWORD = os.getenv("DHIS2_PASSWORD")
     FP_DB_URL = os.getenv("FP_DB_URL")
 
-    test_url = generate_khis_data_api_url(
+    generate_khis_data_api_url(
         base_url=DHIS2_BASE_URL,
         data_element_ids=["J6qnTev1LXw", "hXa1xyUMfTa", "AVDzuypqGt9"],
         org_unit_ids=["vvOK1BxTbet",],
@@ -450,18 +450,18 @@ if __name__ == "__main__":
         end_date="2025-03-01",
         output_id_scheme="NAME",
     )
-    logger.info(test_url)
 
-    # test_data = extract_historical_data_from_khis(
-    #     base_url=DHIS2_BASE_URL,
-    #     username=DHIS2_USERNAME,
-    #     password=DHIS2_PASSWORD,
-    #     data_element_ids=["J6qnTev1LXw.to0Pssxkq4S", "J6qnTev1LXw", "hXa1xyUMfTa", "AVDzuypqGt9"],
-    #     org_unit_ids=["vvOK1BxTbet", "HfVjCurKxh2"],
-    #     start_date="2025-01-01",
-    #     end_date="2025-03-01",
-    #     output_id_scheme="UID",
-    # )
 
-    # test_fp_data_elements = get_fp_data_elements_ids(FP_DB_URL)
-    # test_org_units_ids = get_org_units_ids(FP_DB_URL)
+    extract_historical_data_from_khis(
+        base_url=DHIS2_BASE_URL,
+        username=DHIS2_USERNAME,
+        password=DHIS2_PASSWORD,
+        data_element_ids=["J6qnTev1LXw.to0Pssxkq4S", "J6qnTev1LXw", "hXa1xyUMfTa", "AVDzuypqGt9"],
+        org_unit_ids=["vvOK1BxTbet", "HfVjCurKxh2"],
+        start_date="2025-01-01",
+        end_date="2025-03-01",
+        output_id_scheme="UID",
+    )
+
+    get_fp_data_elements_ids(FP_DB_URL)
+    get_org_units_ids(FP_DB_URL)
