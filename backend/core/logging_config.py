@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 from backend.core.context import trace_id_ctx
 
-LOG_DIR = Path("logs")
+LOG_DIR = Path("backend/logs")
 LOG_DIR.mkdir(exist_ok=True)
 
 
@@ -21,7 +21,7 @@ def setup_logging():
     """
     Configure Loguru to write logs to both console and a rotating log file.
 
-    - logs/app.log will automatically rotate when size > 10 MB
+    - backend/logs/app.log will automatically rotate when size > 10 MB
     - Keeps 10 backup files
     - Older logs are compressed
     """
@@ -42,7 +42,7 @@ def setup_logging():
 
     # File logs
     logger.add(
-        "logs/app.log",
+        "backend/logs/app.log",
         rotation="10 MB",
         retention=10,
         compression="zip",
