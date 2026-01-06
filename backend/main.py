@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
-from backend.core import setup_logging
-from backend.core import TraceIDMiddleware
+from backend.core.logging_config import setup_logging
+from backend.core.middlewares import TraceIDMiddleware
 from backend.routes import metadata_router, data_cleaning_router
 
 
