@@ -15,7 +15,7 @@ def create_data_extraction_router() -> APIRouter:
     router = APIRouter(prefix="/data-extraction", tags=["Data Extraction"])
 
     @router.post(
-        path="/download-metadata",
+        path="/metadata",
         summary="Download and store DHIS2 metadata",
         status_code=status.HTTP_202_ACCEPTED,
         description=(
@@ -31,7 +31,7 @@ def create_data_extraction_router() -> APIRouter:
         return message
 
     @router.post(
-        path="/download-historical-data",
+        path="/historical-data",
         summary="Download and store historical data from DHIS2",
         description=(
             "Downloads historical consumption and service data from DHIS2 "
@@ -42,11 +42,19 @@ def create_data_extraction_router() -> APIRouter:
     async def download_historical_data(
             request: Request,
             bg_tasks: BackgroundTasks,
-            start_date: date = date.today() - timedelta(days=30),
+            start_date: date = date.today() - timedelta(days=90),
             end_date: date = date.today(),
     ) -> APIResponse:
+        """
+        Download historical data from DHIS2
+        """
         trace_id = request.state.trace_id
-        message = await extract_and_store_historical_data_in_bg(trace_id, start_date, end_date, bg_tasks)
+        message = await extract_and_store_historical_data_in_bg(
+            trace_id = trace_id,
+            start_date=start_date,
+            end_date=end_date,
+            bg_tasks=bg_tasks
+        )
         return message
 
     return router

@@ -17,3 +17,10 @@ class APIResponse(BaseModel):
     message: str | None = Field(None, description="Human-readable success/error message")
     data: Any | None = Field(None, description="Main response payload")
     trace_id: str | None = Field(description="Trace ID for debugging and correlation")
+
+
+class KhisCredentials(BaseModel):
+    """Simple container for KHIS/DHIS2 credentials."""
+    base_url: str
+    username: str
+    password: str
